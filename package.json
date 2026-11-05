@@ -5,7 +5,7 @@
   "description": "ABUBAKAR AI TECHNOLOGY COMPANY",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server-new.js"
   },
   "engines": {
     "node": ">=20"
