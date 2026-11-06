@@ -1,16 +1,13 @@
 {
-  "name": "abubakar-ai-super-app",
+  "name": "abubakar-ai-technology",
   "version": "1.0.0",
-  "private": true,
-  "description": "ABUBAKAR AI TECHNOLOGY COMPANY",
-  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "start": "node server-new.js"
-  },
-  "engines": {
-    "node": ">=20"
+    "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "@google/genai": "^2.0.0",
+    "express": "^5.1.0",
+    "cors": "^2.8.5"
   }
 }
