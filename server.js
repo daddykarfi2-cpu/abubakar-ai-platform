@@ -15,8 +15,7 @@ app.use(cors());
 app.use(express.json({ limit: "1mb" }));
 
 // Serve the website from the root directory
-app.use(express.static(__dirname));
-
+app.use(express.static(path.join(__dirname, "public")));
 // Gemini AI
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY
