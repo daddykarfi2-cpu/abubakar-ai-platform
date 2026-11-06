@@ -1,22 +1,28 @@
+
 import express from "express";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 import { GoogleGenAI } from "@google/genai";
 
 const app = express();
+const PORT = process.env.PORT || 3000;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.use(cors());
 app.use(express.json({ limit: "1mb" }));
 
-const PORT = process.env.PORT || 3000;
+// Serve the website from the root directory
+app.use(express.static(__dirname));
 
+// Gemini AI
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY
 });
 
-app.get("/", (req, res) => {
-  res.send("ABUBAKAR AI TECHNOLOGY SERVER IS RUNNING");
-});
-
+// Health check
 app.get("/api/health", (req, res) => {
   res.json({
     status: "online",
@@ -25,6 +31,7 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+// AI Chat
 app.post("/api/chat", async (req, res) => {
   try {
     const { message, language } = req.body;
@@ -37,7 +44,7 @@ app.post("/api/chat", async (req, res) => {
 
     if (!process.env.GEMINI_API_KEY) {
       return res.status(500).json({
-        error: "Gemini API key is not configured."
+        error: "Gemini API key is missing."
       });
     }
 
@@ -46,23 +53,23 @@ app.post("/api/chat", async (req, res) => {
       contents: message,
       config: {
         systemInstruction:
-          `You are Abubakar AI, the official AI assistant of ABUBAKAR AI TECHNOLOGY. Respond helpfully and professionally. Use ${language || "English"} when appropriate.`
+          `You are Abubakar AI, the assistant of ABUBAKAR AI TECHNOLOGY. Reply helpfully in ${language || "English"}.`
       }
     });
 
     res.json({
-      reply: response.text || "No response generated."
+      reply: response.text
     });
 
   } catch (error) {
-    console.error("Gemini error:", error.message);
+    console.error(error);
 
     res.status(500).json({
-      error: "AI service is temporarily unavailable."
+      error: "Gemini AI service failed."
     });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Abubakar AI server running on port ${PORT}`);
+  console.log("ABUBAKAR AI TECHNOLOGY is running on port " + PORT);
 });
